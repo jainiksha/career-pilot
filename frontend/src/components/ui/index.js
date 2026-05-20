@@ -25,4 +25,5 @@ export {
   SkeletonCommentList,
   SkeletonProfile,
   SkeletonTracker,
+  SkeletonSettings,
 } from './Skeleton'
