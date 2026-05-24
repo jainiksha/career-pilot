@@ -9,7 +9,7 @@ export function sectionsToMarkdown(sections) {
   return sections
     .map((s) => {
       const header = `## ${s.name}\n`;
-      const body = s.entries
+      const body = (s.entries || [])
         .map((e) => {
           const parts = [];
           if (e.title) {
