@@ -1,3 +1,10 @@
+# [1.22.0](https://github.com/anurag3407/career-pilot/compare/v1.21.0...v1.22.0) (2026-05-26)
+
+
+### Features
+
+* **portfolio/twitter:** implement Twitter Profile portfolio template ([#1908](https://github.com/anurag3407/career-pilot/issues/1908)) ([a69f1a3](https://github.com/anurag3407/career-pilot/commit/a69f1a324db778deb9bede6e7621bf9a2e218b1d))
+
 # [1.21.0](https://github.com/anurag3407/career-pilot/compare/v1.20.0...v1.21.0) (2026-05-26)
 
 
