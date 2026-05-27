@@ -1,3 +1,10 @@
+# [1.43.0](https://github.com/anurag3407/career-pilot/compare/v1.42.0...v1.43.0) (2026-05-27)
+
+
+### Features
+
+* add backend foundation for career intelligence dashboard ([9649727](https://github.com/anurag3407/career-pilot/commit/96497278647e7590b28265bfa28f8c47eadd14cb))
+
 # [1.42.0](https://github.com/anurag3407/career-pilot/compare/v1.41.0...v1.42.0) (2026-05-27)
 
 
