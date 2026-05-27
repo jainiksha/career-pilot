@@ -7,11 +7,11 @@ export function ContactContent({ data }) {
   const s = data.socials;
 
   const links = [
-    { icon: Github, label: 'GitHub', url: s.github, color: '#DBDEE1' },
-    { icon: Linkedin, label: 'LinkedIn', url: s.linkedin, color: '#0A66C2' },
-    { icon: Twitter, label: 'Twitter', url: s.twitter, color: '#1DA1F2' },
-    { icon: Mail, label: 'Email', url: `mailto:${s.email}`, color: '#EB459E' },
-  ];
+    s.github && { icon: Github, label: 'GitHub', url: s.github, color: '#DBDEE1' },
+    s.linkedin && { icon: Linkedin, label: 'LinkedIn', url: s.linkedin, color: '#0A66C2' },
+    s.twitter && { icon: Twitter, label: 'Twitter', url: s.twitter, color: '#1DA1F2' },
+    s.email && { icon: Mail, label: 'Email', url: `mailto:${s.email}`, color: '#EB459E' },
+  ].filter(Boolean);
 
   return (
     <div className="py-4 space-y-1">

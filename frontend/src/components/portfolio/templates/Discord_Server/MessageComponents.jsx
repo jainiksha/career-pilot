@@ -53,7 +53,7 @@ export function Embed({ color = '#5865F2', title, description, fields, image, fo
             ))}
           </div>
         )}
-        {image && <img src={image} alt="" className="w-full rounded mt-1 max-h-48 object-cover" />}
+        {image && <img src={image} alt={title || 'Embedded image'} className="w-full rounded mt-1 max-h-48 object-cover" />}
         {footer && <div className="text-[11px] text-[#949BA4] mt-2">{footer}</div>}
       </div>
     </div>

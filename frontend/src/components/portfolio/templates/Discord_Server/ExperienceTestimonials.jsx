@@ -19,7 +19,7 @@ export function ExperienceContent({ data }) {
         <p>💼 <span className="font-semibold text-white">{p.name}</span>'s professional journey:</p>
       </Message>
 
-      {data.experience.map((exp, idx) => (
+      {(data.experience || []).map((exp, idx) => (
         <Message
           key={idx}
           avatar={p.avatar}
@@ -59,7 +59,7 @@ export function TestimonialsContent({ data }) {
         <p>💬 Here's what people have said about working with <span className="font-semibold text-white">{p.name}</span>:</p>
       </Message>
 
-      {data.testimonials.map((t, idx) => (
+      {(data.testimonials || []).map((t, idx) => (
         <Message
           key={idx}
           avatar={t.avatar}

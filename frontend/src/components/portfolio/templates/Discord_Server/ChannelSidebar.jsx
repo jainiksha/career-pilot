@@ -27,10 +27,10 @@ export default function ChannelSidebar({ activeChannel, setActiveChannel, name, 
       <div className="flex-1 overflow-y-auto px-2 pt-4 space-y-4 scrollbar-thin">
         {categories.map((cat) => (
           <div key={cat}>
-            <button className="flex items-center gap-0.5 text-[11px] font-bold text-[#949BA4] tracking-wide uppercase hover:text-[#DBDEE1] px-1 mb-1 cursor-pointer">
+            <div className="flex items-center gap-0.5 text-[11px] font-bold text-[#949BA4] tracking-wide uppercase hover:text-[#DBDEE1] px-1 mb-1 cursor-pointer">
               <ChevronDown className="w-3 h-3" />
               {cat}
-            </button>
+            </div>
             {channels
               .filter((ch) => ch.category === cat)
               .map((ch) => (
@@ -56,10 +56,10 @@ export default function ChannelSidebar({ activeChannel, setActiveChannel, name, 
 
         {/* Voice Channel */}
         <div>
-          <button className="flex items-center gap-0.5 text-[11px] font-bold text-[#949BA4] tracking-wide uppercase hover:text-[#DBDEE1] px-1 mb-1 cursor-pointer">
+          <div className="flex items-center gap-0.5 text-[11px] font-bold text-[#949BA4] tracking-wide uppercase hover:text-[#DBDEE1] px-1 mb-1 cursor-pointer">
             <ChevronDown className="w-3 h-3" />
             VOICE CHANNELS
-          </button>
+          </div>
           <div className="flex items-center gap-1.5 px-2 py-1.5 rounded text-sm text-[#949BA4] hover:bg-[#35373C] hover:text-[#DBDEE1] cursor-pointer">
             <Volume2 className="w-4 h-4 shrink-0 opacity-70" />
             <span>Lounge</span>

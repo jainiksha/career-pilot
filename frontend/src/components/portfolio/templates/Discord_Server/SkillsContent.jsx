@@ -11,7 +11,7 @@ const categoryColors = {
 
 export function SkillsContent({ data }) {
   const p = data.personal;
-  const grouped = data.skills.reduce((acc, s) => {
+  const grouped = (data.skills || []).reduce((acc, s) => {
     acc[s.category] = acc[s.category] || [];
     acc[s.category].push(s);
     return acc;
@@ -54,7 +54,7 @@ export function SkillsContent({ data }) {
                     <div className="h-2 bg-[#1E1F22] rounded-full overflow-hidden">
                       <motion.div
                         initial={{ width: 0 }}
-                        animate={{ width: `${skill.level}%` }}
+                        animate={{ width: `${Math.min(100, Math.max(0, Number(skill.level) || 0))}%` }}
                         transition={{ duration: 1, delay: catIdx * 0.2 + i * 0.1 }}
                         className="h-full rounded-full"
                         style={{ backgroundColor: categoryColors[category] || '#5865F2' }}

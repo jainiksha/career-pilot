@@ -19,7 +19,7 @@ export function ProjectsContent({ data }) {
         <p>🚀 Here are <span className="font-semibold text-white">{p.name}</span>'s featured projects:</p>
       </Message>
 
-      {data.projects.map((project, idx) => (
+      {(data.projects || []).map((project, idx) => (
         <Message
           key={idx}
           avatar={p.avatar}
@@ -34,7 +34,7 @@ export function ProjectsContent({ data }) {
               <div className="text-sm text-[#DBDEE1] mb-2">{project.description}</div>
 
               <div className="flex flex-wrap gap-1 mb-2">
-                {project.techStack.map((tech, i) => (
+                {(project.techStack || []).map((tech, i) => (
                   <span key={i} className="bg-[#1E1F22] text-[#B5BAC1] text-[11px] px-2 py-0.5 rounded-full">
                     {tech}
                   </span>
