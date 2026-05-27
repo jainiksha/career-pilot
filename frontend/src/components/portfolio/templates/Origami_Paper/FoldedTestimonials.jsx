@@ -8,14 +8,14 @@ const testimonials = [
     role: "Senior UX Designer @ Figma",
     quote:
       "Working with Alex was like watching origami unfold — each layer of the project revealed something more refined and intentional. Truly a master of structured, purposeful design.",
-    rating: 5,
+    rating: 3,
     rotate: "rotate-1",
   },
   {
     name: "Marcus Chen",
     role: "Engineering Lead @ Notion",
     quote: "Alex's code is as precise as a folded crane. Every component fits together perfectly, and the architectural attention to detail was unlike anything I had seen before.",
-    rating: 5,
+    rating: 3,
     rotate: "-rotate-1",
   },
   {
@@ -23,7 +23,7 @@ const testimonials = [
     role: "Product Manager @ Linear",
     quote:
       "Collaborating with Alex felt effortless. They brought a calm, methodical approach to every sprint — and the results were always beyond what we scoped.",
-    rating: 5,
+    rating: 3,
     rotate: "rotate-2",
   },
 ];
