@@ -4,6 +4,12 @@ import { Mail, Github, Linkedin, Twitter, Send } from "lucide-react";
 import { motion } from "framer-motion";
 
 export default function Contact() {
+    const handleSubmit = (e) => {
+  e.preventDefault();
+
+  alert("Message sent successfully!");
+};
+
   return (
     <section className="relative py-32 px-6 md:px-20 overflow-hidden" id="contact">
 
@@ -105,6 +111,7 @@ export default function Contact() {
               p-10 
               space-y-6
             "
+            onSubmit={handleSubmit}
           >
             <input
               type="text"
@@ -125,13 +132,13 @@ export default function Contact() {
             />
 
             <button
-              type="button"
+              type="submit"
               className="
                 w-full 
                 flex items-center justify-center gap-2
                 p-4 
                 rounded-2xl 
-                bg-gradient-to-r from-pink-500 to-cyan-400 
+                bg-linear-to-r from-pink-500 to-cyan-400 
                 font-semibold
                 hover:scale-[1.02]
                 transition
