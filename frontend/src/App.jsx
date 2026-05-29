@@ -61,6 +61,11 @@ const Verify = lazy(() => import("./pages/fellowship/Verify"));
 const FellowshipMessages = lazy(() => import("./pages/fellowship/FellowshipMessages"));
 const FellowshipChat = lazy(() => import("./pages/fellowship/FellowshipChat"));
 
+
+const AdminLayout = lazy(() => import("./pages/admin/layout/AdminLayout"));
+const AdminDashboard = lazy(() => import("./pages/admin/views/AdminDashboard"));
+const AdminUsers = lazy(() => import("./pages/admin/views/AdminUsers"));
+
 import { NotFound } from './pages';
 const PrivacyPolicy = lazy(() => import('./pages/PrivacyPolicy'));
 const TermsOfService = lazy(() => import('./pages/TermsOfService'));
@@ -131,6 +136,25 @@ function PublicRoute({ children }) {
 
   return children;
 }
+
+
+// Admin Route Wrapper
+const AdminRoute = ({ children }) => {
+  const { user, loading } = useAuth();
+  
+  if (loading) {
+    return <LoadingScreen label="Checking permissions..." />;
+  }
+  
+  // Note: we trust the backend to enforce the real check.
+  // We can just check if they are logged in here, and rely on the backend.
+  // Ideally, the user object would have a role property from the decoded token.
+  if (!user) {
+    return <Navigate to="/login" replace />;
+  }
+  
+  return children;
+};
 
 function AppRoutes() {
   const { user } = useAuth();
@@ -259,6 +283,13 @@ function AppRoutes() {
         <Route path="/linkedin-optimizer" element={<ProtectedRoute><Suspense fallback={<LoadingScreen label="Loading LinkedIn Optimizer..." />}><LinkedInOptimizer /></Suspense></ProtectedRoute>} />
         <Route path="/deployments" element={<ProtectedRoute><Suspense fallback={<LoadingScreen label="Loading Deployments..." />}><Deployments /></Suspense></ProtectedRoute>} />
         <Route path="/settings" element={<ProtectedRoute><Suspense fallback={<LoadingScreen label="Loading Settings..." />}><Settings /></Suspense></ProtectedRoute>} />
+
+        
+        {/* Admin Routes */}
+        <Route path="/admin" element={<AdminRoute><Suspense fallback={<LoadingScreen label="Loading Admin..." />}><AdminLayout /></Suspense></AdminRoute>}>
+          <Route index element={<AdminDashboard />} />
+          <Route path="users" element={<AdminUsers />} />
+        </Route>
 
         {/* Hub Routes */}
         <Route path="/hub/resume" element={<ProtectedRoute><Suspense fallback={<LoadingScreen label="Loading Resume Hub..." />}><ResumeHub /></Suspense></ProtectedRoute>} />
