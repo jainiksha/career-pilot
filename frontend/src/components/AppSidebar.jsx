@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { motion } from "framer-motion";
 import { Brain, ChevronDown } from "lucide-react";
 
@@ -20,7 +20,8 @@ import {
     Moon,
     Zap,
     Rocket,
-    Briefcase
+    Briefcase,
+    GitMerge
 } from "lucide-react";
 import { useAuth } from "../hooks/useAuth";
 import { useTheme } from "../hooks/useTheme";
@@ -245,6 +246,11 @@ function UserSection() {
 export default function AppSidebar() {
     const [open, setOpen] = useState(false);
 const [openAI, setOpenAI] = useState(false);
+const location = useLocation();
+
+useEffect(() => {
+    setOpen(false);
+}, [location.pathname]);
 
     return (
         <Sidebar open={open} setOpen={setOpen}>
@@ -316,6 +322,15 @@ const [openAI, setOpenAI] = useState(false);
             }}
             onClick={() => setOpen(false)}
         />
+        
+        <SidebarLink
+            link={{
+                label: "Repo Analyzer",
+                href: "/repo-analyzer",
+                icon: <GitMerge className="w-4 h-4 shrink-0" />,
+            }}
+            onClick={() => setOpen(false)}
+        />
     </motion.div>
 </div>
                 </div>
@@ -324,4 +339,3 @@ const [openAI, setOpenAI] = useState(false);
         </Sidebar>
     );
 }
-
