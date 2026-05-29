@@ -259,12 +259,6 @@ function SvgPlaceholder({ index, accent, isHovered }) {
 /* ─── Isolated Layer Image Fallback Handler ──────────────────────────────── */
 function ImgWithFallback({ src, alt, isHovered }) {
   const [failed, setFailed] = useState(false);
-  const prevSrc = useRef(src);
-
-  if (prevSrc.current !== src) {
-    prevSrc.current = src;
-    if (failed) setFailed(false);
-  }
 
   if (failed) return null;
 
@@ -299,6 +293,7 @@ function ProjectImage({ src, alt, index, accent, isHovered }) {
       {/* Surface Layer: Remote Fetch */}
       {isValidSrc && (
         <ImgWithFallback
+          key={src} // Dynamic key safely forces a clean state reset when src shifts
           src={src}
           alt={alt}
           isHovered={isHovered}
