@@ -32,6 +32,42 @@ import DayNightCycle from './components/portfolio/templates/Day_Night_Cycle/inde
 import JobTracker from './pages/JobTracker';
 
 const Community = lazy(() => import('./pages/Community'));
+const Login = lazy(() => import("./pages/Login"));
+const Register = lazy(() => import("./pages/Register"));
+const LinkedInCallback = lazy(() => import("./pages/LinkedInCallback"));
+const OpenRouterCallback = lazy(() => import("./pages/OpenRouterCallback"));
+const Upload = lazy(() => import("./pages/Upload"));
+const Enhance = lazy(() => import("./pages/Enhance"));
+const ResumeView = lazy(() => import("./pages/ResumeView"));
+const JobAlerts = lazy(() => import("./pages/JobAlerts"));
+const InterviewPrep = lazy(() => import("./pages/InterviewPrep"));
+const UserProfile = lazy(() => import("./pages/UserProfile"));
+const SecuritySettings = lazy(() => import("./pages/SecuritySettings"));
+const EmailGenerator = lazy(() => import("./pages/EmailGenerator"));
+const LinkedInOptimizer = lazy(() => import("./pages/LinkedInOptimizer"));
+const Settings = lazy(() => import("./pages/Settings"));
+const ResumeHub = lazy(() => import("./pages/hubs/ResumeHub"));
+const JobsHub = lazy(() => import("./pages/hubs/JobsHub"));
+const PortfolioHub = lazy(() => import("./pages/hubs/PortfolioHub"));
+const CareerGrowthHub = lazy(() => import("./pages/hubs/CareerGrowthHub"));
+const CommunityHub = lazy(() => import("./pages/hubs/CommunityHub"));
+const FellowshipLayout = lazy(() => import("./pages/fellowship/FellowshipLayout"));
+const Challenges = lazy(() => import("./pages/fellowship/Challenges"));
+const Onboarding = lazy(() => import("./pages/fellowship/Onboarding"));
+const ChallengeDetail = lazy(() => import("./pages/fellowship/ChallengeDetail"));
+const ChallengeProposals = lazy(() => import("./pages/fellowship/ChallengeProposals"));
+const CreateChallenge = lazy(() => import("./pages/fellowship/CreateChallenge"));
+const MyProposals = lazy(() => import("./pages/fellowship/MyProposals"));
+const MyChallenges = lazy(() => import("./pages/fellowship/MyChallenges"));
+const Verify = lazy(() => import("./pages/fellowship/Verify"));
+const FellowshipMessages = lazy(() => import("./pages/fellowship/FellowshipMessages"));
+const FellowshipChat = lazy(() => import("./pages/fellowship/FellowshipChat"));
+
+
+const AdminLayout = lazy(() => import("./pages/admin/layout/AdminLayout"));
+const AdminDashboard = lazy(() => import("./pages/admin/views/AdminDashboard"));
+const AdminUsers = lazy(() => import("./pages/admin/views/AdminUsers"));
+
 import { NotFound } from './pages';
 
 const PrivacyPolicy = lazy(() => import('./pages/PrivacyPolicy'));
@@ -82,9 +118,9 @@ import RainforestCanopy from './components/portfolio/templates/Rainforest_Canopy
 
 function LoadingScreen({ label }) {
   return (
-    <div className="flex min-h-screen items-center justify-center bg-background">
+    <div className="min-h-screen flex items-center justify-center bg-background">
       <div className="flex flex-col items-center gap-4">
-        <div className="w-12 h-12 border-4 border-muted border-t-primary rounded-full animate-spin" />
+        <div className="w-12 h-12 border-4 border-muted border-t-primary rounded-full animate-spin"></div>
         <p className="text-muted-foreground font-medium">{label}</p>
       </div>
     </div>
@@ -134,6 +170,25 @@ function PublicRoute({ children }) {
 
   return children;
 }
+
+
+// Admin Route Wrapper
+const AdminRoute = ({ children }) => {
+  const { user, loading } = useAuth();
+  
+  if (loading) {
+    return <LoadingScreen label="Checking permissions..." />;
+  }
+  
+  // Note: we trust the backend to enforce the real check.
+  // We can just check if they are logged in here, and rely on the backend.
+  // Ideally, the user object would have a role property from the decoded token.
+  if (!user) {
+    return <Navigate to="/login" replace />;
+  }
+  
+  return children;
+};
 
 function AppRoutes() {
   const { user } = useAuth();
@@ -197,10 +252,15 @@ function AppRoutes() {
         <Route path="/cookies" element={<LegalPageErrorBoundary><Suspense fallback={null}><CookiePolicy /></Suspense></LegalPageErrorBoundary>} />
 
         {/* Template Gallery Route (Registered at /templates) */}
-        <Route path="/templates" element={<RouteErrorBoundary><Suspense fallback={<LoadingScreen label="Loading templates..." />}><TemplateGallery /></Suspense></RouteErrorBoundary>} />
-        <Route path="/templates/chatbot" element={<Suspense fallback={<LoadingScreen label="Loading template..." />}><ChatbotPortfolio /></Suspense>} />
-        <Route path="/templates/gamified-xp" element={<Suspense fallback={<LoadingScreen label="Loading template..." />}><GamifiedXP /></Suspense>} />
+        <Route path="/templates" element={<TemplateGallery />} />
+
         
+
+        <Route path="/templates/chatbot" element={<ChatbotPortfolio />} />
+
+        {/* <Route path="/templates/day-night-cycle" element={<DayNightCycle />} /> */}
+        <Route path="/templates/rainforest-canopy" element={<RainforestCanopy />} />
+        <Route path="/templates/northern-fjords" element={<NorthernFjords />} />
         {/* Core Protected Routes */}
         <Route 
   path="/dashboard" 
@@ -257,6 +317,13 @@ function AppRoutes() {
         <Route path="/deployments" element={<ProtectedRoute><Suspense fallback={<LoadingScreen label="Loading Deployments..." />}><Deployments /></Suspense></ProtectedRoute>} />
         <Route path="/settings" element={<ProtectedRoute><Suspense fallback={<LoadingScreen label="Loading Settings..." />}><Settings /></Suspense></ProtectedRoute>} />
 
+        
+        {/* Admin Routes */}
+        <Route path="/admin" element={<AdminRoute><Suspense fallback={<LoadingScreen label="Loading Admin..." />}><AdminLayout /></Suspense></AdminRoute>}>
+          <Route index element={<AdminDashboard />} />
+          <Route path="users" element={<AdminUsers />} />
+        </Route>
+
         {/* Hub Routes */}
         <Route path="/hub/resume" element={<ProtectedRoute><Suspense fallback={<LoadingScreen label="Loading Resume Hub..." />}><ResumeHub /></Suspense></ProtectedRoute>} />
         <Route path="/hub/jobs" element={<ProtectedRoute><Suspense fallback={<LoadingScreen label="Loading Jobs Hub..." />}><JobsHub /></Suspense></ProtectedRoute>} />
@@ -273,6 +340,16 @@ function AppRoutes() {
     </ProtectedRoute>
   } 
 />
+        <Route
+          path="/github"
+          element={
+            <ProtectedRoute>
+              <Suspense fallback={<div className="flex justify-center items-center h-screen">Loading GitHub Dashboard...</div>}>
+                <GitHubDashboard />
+              </Suspense>
+            </ProtectedRoute>
+          }
+        />
 
         <Route 
   path="/repo-analyzer" 
@@ -300,6 +377,26 @@ function AppRoutes() {
     <ProtectedRoute>
       <Suspense fallback={<LoadingScreen label="Loading Analyzer Workspace..." />}>
         <RepoAnalyzerWorkspace />
+      </Suspense>
+    </ProtectedRoute>
+  } 
+/>
+        <Route 
+  path="/project-visualizer" 
+  element={
+    <ProtectedRoute>
+      <Suspense fallback={<LoadingScreen label="Loading Project Visualizer..." />}>
+        <ProjectVisualizerLanding />
+      </Suspense>
+    </ProtectedRoute>
+  } 
+/>
+        <Route 
+  path="/project-visualizer/dashboard/:sessionId" 
+  element={
+    <ProtectedRoute>
+      <Suspense fallback={<LoadingScreen label="Loading Analysis Dashboard..." />}>
+        <ProjectVisualizerDashboard />
       </Suspense>
     </ProtectedRoute>
   } 
