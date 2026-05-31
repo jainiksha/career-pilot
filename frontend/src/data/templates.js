@@ -256,12 +256,13 @@ export const templates = [
     "title": "Cassette Mixtape",
     "category": "Portfolio",
     "colorScheme": "Dark",
-    "layout": "Grid",
-    "author": "System",
-    "views": 1021,
-    "rating": 4.5,
+    "layout": "Interactive",
+    "author": "Vexx",
+    "views": 2500,
+    "rating": 4.9,
     "image": "/template-previews/Cassette_Mixtape.png",
-    "createdAt": "2026-05-01"
+    "createdAt": "2026-05-31",
+    "isComplete": true
   },
   {
     "id": "Ceramic_Minimal",
