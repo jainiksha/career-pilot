@@ -1,3 +1,15 @@
+# [1.119.0](https://github.com/anurag3407/career-pilot/compare/v1.118.0...v1.119.0) (2026-06-01)
+
+
+### Bug Fixes
+
+* update author to Advik Divekar in templates.js ([4441a6e](https://github.com/anurag3407/career-pilot/commit/4441a6e5c8222d3eb503306b52baa2390c0849b6))
+
+
+### Features
+
+* implement Smoke Mist portfolio template ([#1928](https://github.com/anurag3407/career-pilot/issues/1928)) ([0780313](https://github.com/anurag3407/career-pilot/commit/0780313a5c5146de76be6171d9fb8bda79519131))
+
 # [1.118.0](https://github.com/anurag3407/career-pilot/compare/v1.117.0...v1.118.0) (2026-06-01)
 
 
