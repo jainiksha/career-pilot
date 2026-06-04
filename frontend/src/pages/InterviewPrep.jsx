@@ -5,7 +5,11 @@ import { motion } from 'framer-motion';
 import { Mic, MicOff, Video, VideoOff, XCircle, CheckCircle, AlertCircle, Volume2, VolumeX, RotateCcw, UserX, Loader2, Sparkles, ArrowRight, Target, TrendingUp, MessageSquare, Eye, Brain, Award, ChevronDown, ChevronUp, Clock, BarChart3, Lightbulb, Zap, Laptop, Smartphone, Chrome, AlertTriangle, FileUp, FileText, X } from 'lucide-react';
 import Button from '../components/Button';
 import BodyLanguageTips from '../components/BodyLanguageTips';
+import VoiceToTextButton from '../components/VoiceToTextButton';
 import { interviewApi, uploadApi } from '../services/api';
+import ConfidenceMeter from "../components/ConfidenceMeter";
+import {DEFAULT_PROGRESS,updateDifficulty} from '../utils/interviewDifficulty';
+import LearningRecommendations from "../components/LearningRecommendations";
 
 // Device and browser detection utilities
 const isMobileDevice = () => {
@@ -285,9 +289,22 @@ export default function InterviewPrep() {
   const [audioEnabled, setAudioEnabled] = useState(true);
   const [isSpeaking, setIsSpeaking] = useState(false);
   const [faceVisible, setFaceVisible] = useState(true);
+  const [faceConfidence, setFaceConfidence] = useState(50);
   const [answersSubmitted, setAnswersSubmitted] = useState([]);
 
   const [overallResults, setOverallResults] = useState(null);
+  const [progressData, setProgressData] = useState(() => {
+
+  const stored =
+    localStorage.getItem(
+      "interviewProgress"
+    );
+
+  return stored
+    ? JSON.parse(stored)
+    : DEFAULT_PROGRESS;
+
+});
   const [expressionSamples, setExpressionSamples] = useState([]);
 
   const videoRef = useRef(null);
@@ -396,9 +413,18 @@ export default function InterviewPrep() {
 
     setFaceVisible(detected);
     if (detected) {
-      const confidence = Math.min(100, Math.max(40, 50 + skinRatio * 200));
-      setExpressionSamples(prev => [...prev.slice(-60), { confidence, timestamp: Date.now() }]);
-    }
+  const confidence =
+    Math.min(100, Math.max(40, 50 + skinRatio * 200));
+
+  setFaceConfidence(confidence);
+
+  setExpressionSamples(prev => [
+    ...prev.slice(-60),
+    { confidence, timestamp: Date.now() }
+  ]);
+} else {
+  setFaceConfidence(20);
+}
   };
 
   const getAverageMetrics = () => {
@@ -826,6 +852,21 @@ export default function InterviewPrep() {
   setLoading(true);
   try {
     const response = await interviewApi.completeInterview(interviewId);
+    const score = response.data.overallScore;
+    const previousLevel = progressData.level;
+    const updatedProgress = updateDifficulty(score,progressData);
+    localStorage.setItem("interviewProgress",JSON.stringify( updatedProgress));
+    setProgressData(updatedProgress);
+    if(
+ previousLevel !==
+ updatedProgress.level
+){
+ alert(
+   `🎉 Congratulations!
+You reached
+${updatedProgress.level}`
+ );
+}
 
     setOverallResults(response.data);
     setStep('feedback');
@@ -1230,6 +1271,7 @@ export default function InterviewPrep() {
     const progress = ((currentQuestionIndex + 1) / questions.length) * 100;
 
     return (
+    <>
       <div className="min-h-screen bg-background">
         <div className="fixed inset-0 overflow-hidden pointer-events-none">
           <div className="absolute top-0 left-1/4 w-96 h-96 bg-primary/5 rounded-full blur-3xl" />
@@ -1325,6 +1367,9 @@ export default function InterviewPrep() {
                         </div>
                       </div>
                     </div>
+                    <div className="mt-4">
+                        <ConfidenceMeter confidence={faceConfidence} />
+                   </div>
                     {/* Glowing voice visualizer waveform canvas */}
                     <div className="mt-4 rounded-xl overflow-hidden border border-border/60 bg-slate-950 p-1 flex items-center justify-center">
                       <canvas
@@ -1355,7 +1400,7 @@ export default function InterviewPrep() {
                 ) : (
                   <button onClick={stopRecording} disabled={loading} className="flex-1 py-4 rounded-xl bg-red-500 hover:bg-red-600 text-foreground font-medium flex items-center justify-center gap-2 transition-colors cursor-pointer disabled:opacity-50">
                     <XCircle className="w-5 h-5" />
-                    {loading ? 'Submitting...' : 'Stop & Next'}
+                    {loading ? 'Submitting...' : 'Stop & Submit'}
                   </button>
                 )}
               </div>
@@ -1369,6 +1414,7 @@ export default function InterviewPrep() {
           </div>
         </div>
       </div>
+      </>
     );
   }
 
@@ -1404,6 +1450,38 @@ export default function InterviewPrep() {
     const avgConfidence = overallResults.answers?.reduce((sum, a) => sum + (a.analysis?.confidence || 0), 0) / (overallResults.answers?.length || 1) || 0;
     const totalFillerWords = overallResults.answers?.reduce((sum, a) => sum + (a.analysis?.fillerWords?.count || 0), 0) || 0;
     const expressionScore = overallResults.overallFeedback?.expressionAnalysis?.overallConfidence || 0;
+    const getCommunicationRating = () => {
+  if (avgClarity >= 85 && avgConfidence >= 85) return 'Excellent';
+  if (avgClarity >= 75 && avgConfidence >= 75) return 'Strong';
+  if (avgClarity >= 65 && avgConfidence >= 65) return 'Good';
+  return 'Needs Improvement';
+};
+
+const communicationTips = [];
+
+if (avgConfidence < 70) {
+  communicationTips.push(
+    'Practice speaking more confidently and reduce hesitation.'
+  );
+}
+
+if (avgClarity < 70) {
+  communicationTips.push(
+    'Structure responses using the STAR method.'
+  );
+}
+
+if (totalFillerWords > 5) {
+  communicationTips.push(
+    "Reduce filler words such as 'um', 'uh', and 'like'."
+  );
+}
+
+if (communicationTips.length === 0) {
+  communicationTips.push(
+    'Excellent communication skills. Keep practicing regularly.'
+  );
+}
 
     return (
       <div className="min-h-screen bg-background">
@@ -1426,6 +1504,83 @@ export default function InterviewPrep() {
             <h1 className="text-4xl md:text-5xl font-bold text-foreground mb-3">Interview Complete!</h1>
             <p className="text-lg text-muted-foreground">Here's your comprehensive performance analysis</p>
           </motion.div>
+          <motion.div
+  initial={{ opacity: 0, y: 20 }}
+  animate={{ opacity: 1, y: 0 }}
+  transition={{ delay: 0.05 }}
+  className="mb-8"
+>
+  <div className="p-6 rounded-3xl bg-gradient-to-br from-primary/10 to-primary/5 border border-primary/20">
+
+    <h2 className="text-2xl font-bold mb-4">
+      Adaptive Interview Progress
+    </h2>
+
+    <div className="grid md:grid-cols-2 gap-4">
+
+      <div>
+        <p className="text-muted-foreground">
+          Current Level
+        </p>
+
+        <p className="text-xl font-bold">
+          {progressData.level}
+        </p>
+      </div>
+
+      <div>
+        <p className="text-muted-foreground">
+          Average Score
+        </p>
+
+        <p className="text-xl font-bold">
+          {progressData.averageScore}%
+        </p>
+      </div>
+
+      <div>
+        <p className="text-muted-foreground">
+          Interviews Completed
+        </p>
+
+        <p className="text-xl font-bold">
+          {progressData.completedInterviews}
+        </p>
+      </div>
+
+      <div>
+        <p className="text-muted-foreground">
+          Success Streak
+        </p>
+
+        <p className="text-xl font-bold">
+          {progressData.streak}/3
+        </p>
+      </div>
+
+    </div>
+
+    <div className="mt-6">
+
+      <p className="mb-2 text-sm text-muted-foreground">
+        Progress To Next Level
+      </p>
+
+      <div className="w-full h-3 bg-muted rounded-full overflow-hidden">
+
+        <div
+          className="h-full bg-primary rounded-full transition-all duration-500"
+          style={{
+            width: `${progressData.streak * 33}%`
+          }}
+        />
+
+      </div>
+
+    </div>
+
+  </div>
+</motion.div>
 
           <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="mb-8">
             <div className="p-8 rounded-3xl bg-gradient-to-br from-neutral-900/80 to-neutral-900/40 border border-border backdrop-blur-xl">
@@ -1534,6 +1689,74 @@ export default function InterviewPrep() {
               </div>
             </div>
           </motion.div>
+          <motion.div
+  initial={{ opacity: 0, y: 20 }}
+  animate={{ opacity: 1, y: 0 }}
+  transition={{ delay: 0.2 }}
+  className="mb-8"
+>
+  <div className="p-8 rounded-3xl bg-background/50 border border-border">
+
+    <h2 className="text-2xl font-bold mb-6">
+      Communication & Confidence Analysis
+    </h2>
+
+    <div className="grid md:grid-cols-4 gap-4 mb-6">
+
+      <div className="p-4 rounded-xl bg-emerald-500/10 border border-emerald-500/20">
+        <p className="text-sm text-muted-foreground">
+          Communication Score
+        </p>
+        <p className="text-3xl font-bold text-emerald-400">
+          {Math.round(avgClarity)}
+        </p>
+      </div>
+
+      <div className="p-4 rounded-xl bg-purple-500/10 border border-purple-500/20">
+        <p className="text-sm text-muted-foreground">
+          Confidence Score
+        </p>
+        <p className="text-3xl font-bold text-purple-400">
+          {Math.round(avgConfidence)}
+        </p>
+      </div>
+
+      <div className="p-4 rounded-xl bg-red-500/10 border border-red-500/20">
+        <p className="text-sm text-muted-foreground">
+          Filler Words
+        </p>
+        <p className="text-3xl font-bold text-red-400">
+          {totalFillerWords}
+        </p>
+      </div>
+
+      <div className="p-4 rounded-xl bg-amber-500/10 border border-amber-500/20">
+        <p className="text-sm text-muted-foreground">
+          Rating
+        </p>
+        <p className="text-xl font-bold text-amber-400">
+          {getCommunicationRating()}
+        </p>
+      </div>
+
+    </div>
+
+    <div className="p-5 rounded-xl bg-primary/10 border border-primary/20">
+      <h3 className="font-semibold mb-3">
+        Communication Improvement Roadmap
+      </h3>
+
+      <ul className="space-y-2">
+        {communicationTips.map((tip, index) => (
+          <li key={index}>
+            • {tip}
+          </li>
+        ))}
+      </ul>
+    </div>
+
+  </div>
+</motion.div>
 
           {overallResults.overallFeedback && (
             <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }} className="mb-8">
@@ -1600,6 +1823,11 @@ export default function InterviewPrep() {
                 </ul>
               </div>
             </motion.div>
+            <LearningRecommendations
+  areasToImprove={
+    overallResults.overallFeedback?.areasToImprove || []
+  }
+/>
           </div>
 
           <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.4 }} className="mb-8">
@@ -1638,7 +1866,7 @@ export default function InterviewPrep() {
                     <p className="text-cyan-400/70 text-sm">Insights from facial expression tracking</p>
                   </div>
                 </div>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div className="grid grid-cols-1 md:grid-cols-[1.5fr_1fr] gap-6">
                   <div className="p-5 rounded-2xl bg-muted/30 border border-border/50">
                     <div className="flex items-center justify-between mb-4">
                       <span className="text-foreground">Expression Confidence Score</span>
@@ -1694,4 +1922,4 @@ export default function InterviewPrep() {
   }
 
   return null;
-}
+};
