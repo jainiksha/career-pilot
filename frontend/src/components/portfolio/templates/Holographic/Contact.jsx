@@ -2,8 +2,8 @@ import { useRef, useState } from 'react';
 import { Mail, Phone, MapPin, Link, GitBranch, Send, Sparkles, Radio, User, AtSign, MessageSquare, Type } from 'lucide-react';
 
 const CONTACT_ITEMS = [
-  { icon: Mail,      label: 'Email',    value: 'hello@neonlab.dev',      href: 'mailto:hello@neonlab.dev', accent: 'from-cyan-400 to-blue-500'     },
-  { icon: Phone,     label: 'Phone',    value: '+1 (555) 010-2049',       href: 'tel:+15550102049',          accent: 'from-fuchsia-400 to-pink-500'  },
+  { icon: Mail,      label: 'Email',    value: 'hello@neonlab.dev',      href: '#',                          accent: 'from-cyan-400 to-blue-500'     },
+  { icon: Phone,     label: 'Phone',    value: '+1 (555) 010-2049',       href: '#',                         accent: 'from-fuchsia-400 to-pink-500'  },
   { icon: MapPin,    label: 'Location', value: 'San Francisco, CA',       href: '#',                         accent: 'from-violet-400 to-indigo-500' },
   { icon: Link,      label: 'LinkedIn', value: 'linkedin.com/in/neonlab', href: '#',                         accent: 'from-sky-400 to-cyan-500'      },
   { icon: GitBranch, label: 'GitHub',   value: 'github.com/neonlab',      href: '#',                         accent: 'from-purple-400 to-fuchsia-500'},
