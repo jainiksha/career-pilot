@@ -65,10 +65,19 @@ function extractKeywords(text = "") {
     "team",
   ]);
 
-  const words = text.toLowerCase().match(/[a-z0-9+#.]+/g) || [];
+  const shortSkills = new Set(["go", "r", "c", "c#", "qa", "ui", "ux"]);
+
+  const words = (text.toLowerCase().match(/[a-z0-9+#.]+/g) || []).map((word) =>
+    word.replace(/\.+$/, ""),
+  );
 
   return [
-    ...new Set(words.filter((word) => word.length > 2 && !stopWords.has(word))),
+    ...new Set(
+      words.filter(
+        (word) =>
+          (word.length > 2 || shortSkills.has(word)) && !stopWords.has(word),
+      ),
+    ),
   ];
 }
 
@@ -252,14 +261,14 @@ Rules:
     return {
       matchScore: Math.min(100, Math.max(0, Number(parsed.matchScore) || 0)),
       matchedSkills: Array.isArray(parsed.matchedSkills)
-        ? parsed.matchedSkills
+        ? parsed.matchedSkills.filter((item) => typeof item === "string")
         : [],
       missingSkills: Array.isArray(parsed.missingSkills)
-        ? parsed.missingSkills
+        ? parsed.missingSkills.filter((item) => typeof item === "string")
         : [],
       strengths: Array.isArray(parsed.strengths) ? parsed.strengths : [],
       recommendations: Array.isArray(parsed.recommendations)
-        ? parsed.recommendations
+        ? parsed.recommendations.filter((item) => typeof item === "string")
         : [],
     };
   } catch (error) {
