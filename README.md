@@ -2,8 +2,10 @@
   <h1>🚀 Career Pilot</h1>
   <p>An AI-powered resume builder and career toolkit that helps users create resumes, prepare for interviews, search jobs, and launch developer portfolios.</p>
   <p>
-    <a href="https://careerpilotyy.netlify.app" target="_blank">Live Demo</a> ·
-    <a href="https://github.com/anurag3407/career-pilot" target="_blank">Source</a>
+    <img src="https://img.shields.io/badge/React-19-blue?logo=react&logoColor=white" alt="React 19" />
+    <img src="https://img.shields.io/badge/Vite-7.3.5-brightgreen?logo=vite&logoColor=white" alt="Vite" />
+    <img src="https://img.shields.io/badge/TailwindCSS-4-skyblue?logo=tailwindcss&logoColor=white" alt="TailwindCSS" />
+    <img src="https://img.shields.io/badge/Firebase-auth-orange?logo=firebase&logoColor=white" alt="Firebase" />
   </p>
 </div>
 
@@ -31,6 +33,17 @@ The project combines a React + Vite frontend with an Express backend, Firebase a
 - Responsive UI with TailwindCSS and Framer Motion
 - Admin and community tools for job seekers and teams
 
+## Tech Snapshot
+
+<div align="center">
+  <img src="https://img.shields.io/badge/Node.js-20-green?logo=node.js&logoColor=white" alt="Node.js" />
+  <img src="https://img.shields.io/badge/Express-4.18-lightgrey?logo=express&logoColor=black" alt="Express" />
+  <img src="https://img.shields.io/badge/MongoDB-6.0-darkgreen?logo=mongodb&logoColor=white" alt="MongoDB" />
+  <img src="https://img.shields.io/badge/Socket.IO-4-cyan?logo=socket.io&logoColor=white" alt="Socket.IO" />
+</div>
+
+Career Pilot combines a polished React frontend with AI APIs, cloud auth, real-time updates, and resume export workflows.
+
 ## Workflow / How It Works
 
 1. A user signs in through Firebase.
@@ -42,51 +55,200 @@ The project combines a React + Vite frontend with an Express backend, Firebase a
 
 ## Screenshots / Visual Preview
 
-> Add screenshots or GIFs here to highlight the resume editor, dashboard, portfolio themes, and job search experience.
 
-- Dashboard and personalized career insights
-- Resume builder with drag-and-drop editing
-- Job search and alerts screen
-- Portfolio template preview
+<div align="center">
+  <img src="https://via.placeholder.com/1100x420.png?text=Career+Pilot+Dashboard+Preview" alt="Career Pilot Dashboard preview" width="100%" />
+</div>
+
+<div align="center" style="display:flex; gap:16px; flex-wrap:wrap; justify-content:center; margin-top:16px;">
+  <img src="https://via.placeholder.com/520x320.png?text=Resume+Builder+Editor" alt="Resume Builder Editor" width="48%" style="max-width:520px;" />
+  <img src="https://via.placeholder.com/520x320.png?text=Job+Search+and+Alerts" alt="Job Search and Alerts" width="48%" style="max-width:520px;" />
+</div>
+
+<div align="center" style="display:flex; gap:16px; flex-wrap:wrap; justify-content:center; margin-top:16px;">
+  <img src="https://via.placeholder.com/520x320.png?text=Portfolio+Template+Gallery" alt="Portfolio Template Gallery" width="48%" style="max-width:520px;" />
+  <img src="https://via.placeholder.com/520x320.png?text=Interview+Prep+Workflow" alt="Interview Prep Workflow" width="48%" style="max-width:520px;" />
+</div>
+
+### Highlights
+
+- Resume builder and export workflow
+- Job search, alerts, and interview prep UI
+- Portfolio template previews and publishing flow
+- AI content generation and productivity tools
 
 ## Environment Variables
 
 ### Backend (`backend/.env`)
-
-| Variable | Description | Example |
-|---|---|---|
-| `PORT` | Backend server port | `5001` |
-| `NODE_ENV` | Runtime environment | `development` |
-| `FRONTEND_URL` | Frontend origin for CORS | `http://localhost:5173` |
-| `MONGODB_URI` | MongoDB connection string | `mongodb://localhost:27017/career-pilot` |
-| `REDIS_URL` | Redis URL for BullMQ | `redis://localhost:6379` |
-| `GEMINI_API_KEY` | Google Gemini API key | `your-gemini-api-key` |
-| `OPENAI_API_KEY` | OpenAI API key | `your-openai-api-key` |
-| `RAPIDAPI_KEY` | RapidAPI key for job search | `your-rapidapi-key` |
-| `FIREBASE_PROJECT_ID` | Firebase project identifier | `your-firebase-project-id` |
-| `FIREBASE_STORAGE_BUCKET` | Firebase storage bucket | `your-firebase.appspot.com` |
-| `FIREBASE_SERVICE_ACCOUNT_PATH` | Path to Firebase service account JSON | `./service-account.json` |
-| `EMAIL_HOST` | SMTP host for email service | `smtp.gmail.com` |
-| `EMAIL_PORT` | SMTP port | `587` |
-| `EMAIL_USER` | Email sender address | `no-reply@example.com` |
-| `EMAIL_PASS` | SMTP password / app password | `your-email-password` |
-| `LINKEDIN_REDIRECT_URI` | LinkedIn OAuth callback | `http://localhost:5001/api/auth/linkedin/callback` |
-| `DEV_BYPASS_AUTH` | Local auth bypass flag | `false` |
+<table>
+  <colgroup>
+    <col style="width: 18%;" />
+    <col style="width: 55%;" />
+    <col style="width: 27%;" />
+  </colgroup>
+  <thead>
+    <tr>
+      <th>Variable</th>
+      <th>Description</th>
+      <th>Example</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>PORT</code></td>
+      <td>Backend server port</td>
+      <td><code>5001</code></td>
+    </tr>
+    <tr>
+      <td><code>NODE_ENV</code></td>
+      <td>Runtime environment</td>
+      <td><code>development</code></td>
+    </tr>
+    <tr>
+      <td><code>FRONTEND_URL</code></td>
+      <td>Frontend origin for CORS</td>
+      <td><code>http://localhost:5173</code></td>
+    </tr>
+    <tr>
+      <td><code>MONGODB_URI</code></td>
+      <td>MongoDB connection string</td>
+      <td><code>mongodb://localhost:27017/career-pilot</code></td>
+    </tr>
+    <tr>
+      <td><code>REDIS_URL</code></td>
+      <td>Redis URL for BullMQ</td>
+      <td><code>redis://localhost:6379</code></td>
+    </tr>
+    <tr>
+      <td><code>GEMINI_API_KEY</code></td>
+      <td>Google Gemini API key</td>
+      <td><code>your-gemini-api-key</code></td>
+    </tr>
+    <tr>
+      <td><code>OPENAI_API_KEY</code></td>
+      <td>OpenAI API key</td>
+      <td><code>your-openai-api-key</code></td>
+    </tr>
+    <tr>
+      <td><code>RAPIDAPI_KEY</code></td>
+      <td>RapidAPI key for job search</td>
+      <td><code>your-rapidapi-key</code></td>
+    </tr>
+    <tr>
+      <td><code>FIREBASE_PROJECT_ID</code></td>
+      <td>Firebase project identifier</td>
+      <td><code>your-firebase-project-id</code></td>
+    </tr>
+    <tr>
+      <td><code>FIREBASE_STORAGE_BUCKET</code></td>
+      <td>Firebase storage bucket</td>
+      <td><code>your-firebase.appspot.com</code></td>
+    </tr>
+    <tr>
+      <td><code>FIREBASE_SERVICE_ACCOUNT_PATH</code></td>
+      <td>Path to Firebase service account JSON</td>
+      <td><code>./service-account.json</code></td>
+    </tr>
+    <tr>
+      <td><code>EMAIL_HOST</code></td>
+      <td>SMTP host for email service</td>
+      <td><code>smtp.gmail.com</code></td>
+    </tr>
+    <tr>
+      <td><code>EMAIL_PORT</code></td>
+      <td>SMTP port</td>
+      <td><code>587</code></td>
+    </tr>
+    <tr>
+      <td><code>EMAIL_USER</code></td>
+      <td>Email sender address</td>
+      <td><code>no-reply@example.com</code></td>
+    </tr>
+    <tr>
+      <td><code>EMAIL_PASS</code></td>
+      <td>SMTP password / app password</td>
+      <td><code>your-email-password</code></td>
+    </tr>
+    <tr>
+      <td><code>LINKEDIN_REDIRECT_URI</code></td>
+      <td>LinkedIn OAuth callback</td>
+      <td><code>http://localhost:5001/api/auth/linkedin/callback</code></td>
+    </tr>
+    <tr>
+      <td><code>DEV_BYPASS_AUTH</code></td>
+      <td>Local auth bypass flag</td>
+      <td><code>false</code></td>
+    </tr>
+  </tbody>
+</table>
 
 ### Frontend (`frontend/.env`)
-
-| Variable | Description | Example |
-|---|---|---|
-| `VITE_API_URL` | Backend API base URL | `http://localhost:5001` |
-| `VITE_API_BASE` | Backend API prefix | `http://localhost:5001/api` |
-| `VITE_FIREBASE_API_KEY` | Firebase client API key | `your-firebase-api-key` |
-| `VITE_FIREBASE_AUTH_DOMAIN` | Firebase auth domain | `your-project.firebaseapp.com` |
-| `VITE_FIREBASE_PROJECT_ID` | Firebase project ID | `your-firebase-project-id` |
-| `VITE_FIREBASE_STORAGE_BUCKET` | Firebase storage bucket | `your-project.appspot.com` |
-| `VITE_FIREBASE_MESSAGING_SENDER_ID` | Firebase messaging sender ID | `1234567890` |
-| `VITE_FIREBASE_APP_ID` | Firebase app ID | `1:1234567890:web:abcdef123456` |
-| `VITE_FIREBASE_MEASUREMENT_ID` | Analytics measurement ID | `G-XXXXXXXXXX` |
-| `VITE_MAX_SIZE_MB` | Max upload size for resumes | `5` |
+<table>
+  <colgroup>
+    <col style="width: 18%;" />
+    <col style="width: 55%;" />
+    <col style="width: 27%;" />
+  </colgroup>
+  <thead>
+    <tr>
+      <th>Variable</th>
+      <th>Description</th>
+      <th>Example</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>VITE_API_URL</code></td>
+      <td>Backend API base URL</td>
+      <td><code>http://localhost:5001</code></td>
+    </tr>
+    <tr>
+      <td><code>VITE_API_BASE</code></td>
+      <td>Backend API prefix</td>
+      <td><code>http://localhost:5001/api</code></td>
+    </tr>
+    <tr>
+      <td><code>VITE_FIREBASE_API_KEY</code></td>
+      <td>Firebase client API key</td>
+      <td><code>your-firebase-api-key</code></td>
+    </tr>
+    <tr>
+      <td><code>VITE_FIREBASE_AUTH_DOMAIN</code></td>
+      <td>Firebase auth domain</td>
+      <td><code>your-project.firebaseapp.com</code></td>
+    </tr>
+    <tr>
+      <td><code>VITE_FIREBASE_PROJECT_ID</code></td>
+      <td>Firebase project ID</td>
+      <td><code>your-firebase-project-id</code></td>
+    </tr>
+    <tr>
+      <td><code>VITE_FIREBASE_STORAGE_BUCKET</code></td>
+      <td>Firebase storage bucket</td>
+      <td><code>your-project.appspot.com</code></td>
+    </tr>
+    <tr>
+      <td><code>VITE_FIREBASE_MESSAGING_SENDER_ID</code></td>
+      <td>Firebase messaging sender ID</td>
+      <td><code>1234567890</code></td>
+    </tr>
+    <tr>
+      <td><code>VITE_FIREBASE_APP_ID</code></td>
+      <td>Firebase app ID</td>
+      <td><code>1:1234567890:web:abcdef123456</code></td>
+    </tr>
+    <tr>
+      <td><code>VITE_FIREBASE_MEASUREMENT_ID</code></td>
+      <td>Analytics measurement ID</td>
+      <td><code>G-XXXXXXXXXX</code></td>
+    </tr>
+    <tr>
+      <td><code>VITE_MAX_SIZE_MB</code></td>
+      <td>Max upload size for resumes</td>
+      <td><code>5</code></td>
+    </tr>
+  </tbody>
+</table>
 
 > For the complete list of supported variables, see `backend/.env.example`, `frontend/.env.example`, and `docs/environment-setup.md`.
 
