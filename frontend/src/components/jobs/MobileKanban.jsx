@@ -359,9 +359,10 @@ export default function MobileKanban({
   onDelete: externalOnDelete,
   className,
 }) {
+  const isControlled = initialJobs !== undefined;
   const [trackedJobs, setTrackedJobs] = useState(initialJobs || []);
   const [stats, setStats] = useState(null);
-  const [loading, setLoading] = useState(!initialJobs);
+  const [loading, setLoading] = useState(initialJobs === undefined);
   const [isOffline, setIsOffline] = useState(
     typeof navigator !== "undefined" ? !navigator.onLine : false
   );
@@ -371,8 +372,6 @@ export default function MobileKanban({
   const [isSyncing, setIsSyncing] = useState(false);
 
   const currentUserId = auth?.currentUser?.uid || "anonymous";
-
-  const isControlled = Boolean(initialJobs);
 
   const loadCachedTrackerData = useCallback(() => {
     const snapshot = loadJobTrackerSnapshot(currentUserId);

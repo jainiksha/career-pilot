@@ -1,7 +1,7 @@
 import { render, screen, fireEvent, waitFor } from "@testing-library/react";
 import { describe, test, expect, vi, beforeEach } from "vitest";
 
-const { mockToast, mockJobTrackerApi, mockOfflineUtils } = vi.hoisted(() => {
+const { mockToast, mockJobTrackerApi, mockOfflineUtils, dndMock } = vi.hoisted(() => {
   const toast = Object.assign(vi.fn(), { success: vi.fn(), error: vi.fn(), custom: vi.fn() });
   const api = {
     getAll: vi.fn(),
@@ -28,7 +28,19 @@ const { mockToast, mockJobTrackerApi, mockOfflineUtils } = vi.hoisted(() => {
     saveJobTrackerSnapshot: vi.fn(() => ({ lastSyncedAt: new Date().toISOString() })),
     saveJobTrackerStats: vi.fn(() => ({ lastSyncedAt: new Date().toISOString() })),
   };
-  return { mockToast: toast, mockJobTrackerApi: api, mockOfflineUtils: offlineUtils };
+  const onDragEndCallbacks = [];
+  const dnd = {
+    _callbacks: onDragEndCallbacks,
+    triggerDragEnd(result) {
+      for (const cb of onDragEndCallbacks) {
+        cb(result);
+      }
+    },
+    reset() {
+      onDragEndCallbacks.length = 0;
+    },
+  };
+  return { mockToast: toast, mockJobTrackerApi: api, mockOfflineUtils: offlineUtils, dndMock: dnd };
 });
 
 vi.mock("react-hot-toast", () => ({
@@ -47,6 +59,23 @@ vi.mock("../../../config/firebase", () => ({
 }));
 
 vi.mock("../../../utils/jobTrackerOffline", () => mockOfflineUtils);
+
+vi.mock("@hello-pangea/dnd", () => ({
+  DragDropContext: ({ children, onDragEnd }) => {
+    if (onDragEnd) dndMock._callbacks.push(onDragEnd);
+    return children;
+  },
+  Droppable: ({ children }) =>
+    children(
+      { innerRef: vi.fn(), droppableProps: {}, placeholder: null },
+      { isDraggingOver: false }
+    ),
+  Draggable: ({ children }) =>
+    children(
+      { innerRef: vi.fn(), draggableProps: {}, dragHandleProps: {} },
+      { isDragging: false }
+    ),
+}));
 
 const sampleJobs = [
   {
@@ -116,6 +145,7 @@ const mockStats = {
 describe("MobileKanban component", () => {
   beforeEach(() => {
     vi.clearAllMocks();
+    dndMock.reset();
     mockJobTrackerApi.getAll.mockResolvedValue({ trackedJobs: sampleJobs });
     mockJobTrackerApi.getStats.mockResolvedValue({ stats: mockStats });
     mockJobTrackerApi.updateStatus.mockResolvedValue({});
@@ -167,6 +197,111 @@ describe("MobileKanban component", () => {
       await waitFor(() => {
         expect(mockJobTrackerApi.getAll).toHaveBeenCalledTimes(1);
         expect(mockJobTrackerApi.getStats).toHaveBeenCalledTimes(1);
+      });
+    });
+  });
+
+  describe("Drag and drop", () => {
+    test("drag from Saved to Applied column calls updateStatus API", async () => {
+      const MobileKanban = (await import("../MobileKanban")).default;
+      render(<MobileKanban />);
+
+      await waitFor(() => {
+        expect(screen.getByText("Frontend Developer")).toBeInTheDocument();
+      });
+
+      dndMock.triggerDragEnd({
+        draggableId: "job-1",
+        source: { droppableId: "saved", index: 0 },
+        destination: { droppableId: "applied", index: 0 },
+      });
+
+      await waitFor(() => {
+        expect(mockJobTrackerApi.updateStatus).toHaveBeenCalledWith("job-1", "applied");
+        expect(mockToast.success).toHaveBeenCalledWith("Status updated!");
+      });
+    });
+
+    test("drag cancellation (no destination) does not call updateStatus", async () => {
+      const MobileKanban = (await import("../MobileKanban")).default;
+      render(<MobileKanban />);
+
+      await waitFor(() => {
+        expect(screen.getByText("Frontend Developer")).toBeInTheDocument();
+      });
+
+      dndMock.triggerDragEnd({
+        draggableId: "job-1",
+        source: { droppableId: "saved", index: 0 },
+        destination: null,
+      });
+
+      await waitFor(() => {
+        expect(mockJobTrackerApi.updateStatus).not.toHaveBeenCalled();
+      });
+    });
+
+    test("status update API failure reverts the job to its original column", async () => {
+      vi.spyOn(console, "error").mockImplementation(() => {});
+      mockJobTrackerApi.updateStatus.mockRejectedValue(new Error("Server error"));
+
+      const MobileKanban = (await import("../MobileKanban")).default;
+      render(<MobileKanban />);
+
+      await waitFor(() => {
+        expect(screen.getByText("Frontend Developer")).toBeInTheDocument();
+      });
+
+      dndMock.triggerDragEnd({
+        draggableId: "job-1",
+        source: { droppableId: "saved", index: 0 },
+        destination: { droppableId: "applied", index: 0 },
+      });
+
+      await waitFor(() => {
+        expect(mockToast.error).toHaveBeenCalledWith("Failed to update status");
+      });
+    });
+
+    test("offline queue after drag when network error occurs", async () => {
+      vi.spyOn(console, "error").mockImplementation(() => {});
+      mockJobTrackerApi.updateStatus.mockRejectedValue(new TypeError("Failed to fetch"));
+
+      const MobileKanban = (await import("../MobileKanban")).default;
+      render(<MobileKanban />);
+
+      await waitFor(() => {
+        expect(screen.getByText("Frontend Developer")).toBeInTheDocument();
+      });
+
+      dndMock.triggerDragEnd({
+        draggableId: "job-1",
+        source: { droppableId: "saved", index: 0 },
+        destination: { droppableId: "applied", index: 0 },
+      });
+
+      await waitFor(() => {
+        expect(mockOfflineUtils.queueStatusUpdate).toHaveBeenCalledWith("test-user-123", "job-1", "applied");
+        expect(mockToast.success).toHaveBeenCalledWith(
+          "Status saved offline. It will sync when you reconnect.",
+          expect.any(Object)
+        );
+      });
+    });
+
+    test("calls onStatusUpdate callback in controlled mode", async () => {
+      const onStatusUpdate = vi.fn();
+      const MobileKanban = (await import("../MobileKanban")).default;
+      render(<MobileKanban initialJobs={[sampleJobs[0]]} onStatusUpdate={onStatusUpdate} />);
+
+      dndMock.triggerDragEnd({
+        draggableId: "job-1",
+        source: { droppableId: "saved", index: 0 },
+        destination: { droppableId: "applied", index: 0 },
+      });
+
+      await waitFor(() => {
+        expect(onStatusUpdate).toHaveBeenCalledWith("job-1", "applied");
       });
     });
   });
