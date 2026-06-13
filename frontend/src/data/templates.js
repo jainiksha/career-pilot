@@ -2742,6 +2742,19 @@ export const templates = [
     "image": "/templates/Commercial_Pilot_Cockpit.png",
     "createdAt": "2026-06-12",
     "isComplete": true
+  },
+  {
+    "id": "Book_Page_Flip_3D_Render",
+    "title": "Book Page Flip 3D Render",
+    "category": "Portfolio",
+    "colorScheme": "Dark",
+    "layout": "Interactive",
+    "author": "System",
+    "views": 3200,
+    "rating": 5.0,
+    "image": "/templates/Book_Page_Flip_3D_Render.png",
+    "createdAt": "2026-06-13",
+    "isComplete": true
   }
 ];
 
