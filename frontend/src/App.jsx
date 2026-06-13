@@ -117,8 +117,8 @@ import DigitalManifestoScroll from './components/portfolio/templates/Digital_Man
 import TestSocialLinks from './pages/TestSocialLinks';
 import ZineCollage from './components/portfolio/templates/ZineCollage';
 import TransparentDesktopOverlayOS from './components/portfolio/templates/Transparent_Desktop_Overlay_OS/index.jsx';
-import Origami_Unfold_Step_Animation from './components/portfolio/templates/Origami_Unfold_Step_Animation/index.jsx';
 import Commercial_Pilot_Cockpit from './components/portfolio/templates/Commercial_Pilot_Cockpit/index.jsx';
+import Book_Page_Flip_3D_Render from './components/portfolio/templates/Book_Page_Flip_3D_Render/index.jsx';
 
 function LoadingScreen({ label }) {
   return (
@@ -287,8 +287,8 @@ function AppRoutes() {
         <Route path="/templates/chatbot" element={<ChatbotPortfolio />} /> 
         <Route path="/templates/glassmorphism" element={<GlassmorphismTemplate/>} />
         <Route path="/templates/transparent-desktop-overlay-os" element={<TransparentDesktopOverlayOS />} />
-        <Route path="/templates/origami-unfold-step-animation" element={<Origami_Unfold_Step_Animation />} />
         <Route path="/templates/commercial-pilot-cockpit" element={<Commercial_Pilot_Cockpit />} />
+        <Route path="/templates/book-page-flip-3d-render" element={<Book_Page_Flip_3D_Render />} />
         {/* Core Protected Routes */}
         <Route 
   path="/dashboard" 
