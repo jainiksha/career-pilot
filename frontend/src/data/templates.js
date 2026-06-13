@@ -442,12 +442,17 @@ export const templates = [
     "createdAt": "2026-05-31",
     "isComplete": true
   },
-
+  
   {
     id: "zine-collage",
     title: "Zine Collage",
     category: "Brutalist",
     description: "An asymmetric, high-contrast scrapbook magazine layout featuring heavy ink borders, rotated clipping frames, and retro label-maker accents.",
+    author: "System",
+    views: 0,
+    rating: 4.5,
+    image: "/template-previews/Zine_Collage.png",
+    createdAt: "2026-06-01",
     isComplete: true
   },
   
@@ -2579,5 +2584,20 @@ export const templates = [
     "image": "/template-previews/Digital_Manifesto_Scroll.png",
     "createdAt": "2026-06-07",
     "isComplete": true
-  }
+  },
+
+  {
+    id: "Accordion_Fold_Brochure",
+    title: "Accordion Fold Brochure",
+    category: "Portfolio",
+    colorScheme: "Light",
+    layout: "Brochure",
+    author: "virakshi",
+    views: 0,
+    rating: 4.5,
+    image: "/template-previews/Accordion_Fold_Brochure.png",
+    createdAt: "2026-06-13",
+    isComplete: true
+  },
+
 ];
