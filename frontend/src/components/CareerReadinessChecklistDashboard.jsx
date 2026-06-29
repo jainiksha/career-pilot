@@ -1,4 +1,4 @@
-import { CheckCircle2, FileText, Globe, Mic, Target } from "lucide-react";
+import { CheckCircle2, FileText, Globe, Mic, Target, ArrowRight } from "lucide-react";
 
 export default function CareerReadinessChecklistDashboard() {
   const checklist = [
@@ -14,6 +14,8 @@ export default function CareerReadinessChecklistDashboard() {
     (completed / checklist.length) * 100
   );
 
+  const pending = checklist.length - completed;
+
   return (
     <div className="rounded-2xl bg-card border border-border p-6 shadow-sm">
       <div className="flex items-center gap-3 mb-6">
@@ -24,13 +26,31 @@ export default function CareerReadinessChecklistDashboard() {
       </div>
 
       <div className="mb-6 p-5 rounded-xl border border-border">
-        <p className="text-xs text-muted-foreground">
-          Readiness Score
-        </p>
-        <p className="text-3xl font-black text-emerald-500">
-          {readinessScore}%
-        </p>
-      </div>
+  <p className="text-xs text-muted-foreground">
+    Career Readiness Score
+  </p>
+
+  <p className="text-3xl font-black text-emerald-500 mb-3">
+    {readinessScore}%
+  </p>
+
+  <div className="w-full h-3 bg-muted rounded-full overflow-hidden">
+    <div
+      className="h-full bg-emerald-500 transition-all duration-500"
+      style={{ width: `${readinessScore}%` }}
+    />
+  </div>
+
+  <p className="text-xs text-muted-foreground mt-3">
+    {completed} of {checklist.length} tasks completed • {pending} remaining
+  </p>
+  <div className="mt-6 flex justify-end">
+  <button className="inline-flex items-center gap-2 rounded-xl bg-primary px-4 py-2 text-sm font-bold text-primary-foreground hover:bg-primary/90 transition-colors">
+    Improve Readiness
+    <ArrowRight className="w-4 h-4" />
+  </button>
+</div>
+</div>
 
       <div className="space-y-3">
         {checklist.map((item) => {
